@@ -18,12 +18,11 @@ proc parseFilePath(): string =
 proc formatFileContents(filePath: string): void =
   if fileExists(filePath):
     let file = open(filePath, fmRead)
-    var fileContent = file.readAll
+    let fileContent = file.readAll
 
     var newContent: string
     for i in 0..fileContent.len-1:
       var str = $fileContent[i]
-
       if str == "" or str == "\n" or (str == "." and $fileContent[i-1] == "."):
         discard
       elif(str == "." or str == "?"):
@@ -33,6 +32,7 @@ proc formatFileContents(filePath: string): void =
         newContent.add str
 
     echo newContent
+    writeFile(filePath, newContent)
   else:
     raise newException(ValueError, "The file does not exist")
 
