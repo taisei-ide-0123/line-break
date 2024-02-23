@@ -22,14 +22,16 @@ proc formatFileContents(filePath: string): void =
 
     var newContent: string
     for i in 0..fileContent.len-1:
-      var str = $fileContent[i]
-      if str == "" or str == "\n" or (str == "." and $fileContent[i-1] == "."):
-        discard
-      elif(str == "." or str == "?"):
-        str = str & "\n"
-        newContent.add str
+      if i == 0:
+        continue
+
+      var pre = $fileContent[i - 1]
+      var cur = $fileContent[i]
+
+      if (pre == "." and cur == " "):
+        newContent.add ".\n\n"
       else:
-        newContent.add str
+        newContent.add cur
 
     echo newContent
     writeFile(filePath, newContent)
